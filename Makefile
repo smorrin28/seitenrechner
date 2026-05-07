@@ -14,7 +14,7 @@ build: install
 		--onefile \
 		--windowed \
 		--name Seitenrechner \
-		--icon NONE \
+		--icon "assets/icon.ico" \
 		seitenrechner.py
 	@echo ""
 	@echo "Fertig! Installer liegt unter: dist/Seitenrechner.exe"
