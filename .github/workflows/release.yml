@@ -1,0 +1,39 @@
+name: Build & Draft Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install build dependencies
+        run: uv sync --group dev
+
+      - name: Build .exe with PyInstaller
+        run: |
+          uv run pyinstaller `
+            --onefile `
+            --windowed `
+            --name Seitenrechner `
+            --icon NONE `
+            seitenrechner.py
+
+      - name: Draft GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          files: dist/Seitenrechner.exe
